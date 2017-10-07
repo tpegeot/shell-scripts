@@ -1,4 +1,6 @@
 #!/bin/ksh
+# Author : Thomas Pegeot
+# Description : scans a batch of pages with ADF and converts it to multiple pdf files
 
 TMP_DIR=/tmp/scan
 PDF_DIR=/media/documents/commun/scan

@@ -1,4 +1,7 @@
 #!/bin/bash
+# 
+# Author : Thomas Pegeot
+# Description : automates the compilation and installation of a new kernel
 
 [[ -n "$DEBUG" ]] &&  set -x
 
