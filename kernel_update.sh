@@ -27,51 +27,51 @@ fi
 target=$1
 
 GETUID=$(id -u)
-if [ ${GETUID=} -ne 0 ]
+if [ ${GETUID} -ne 0 ]
 then
   echo "This script must be run as root"
   exit 10
 fi
 
 
-if [ ! -d $KERNEL_SRC/linux-$target ]
+if [ ! -d "${KERNEL_SRC}/linux-${target}" ]
 then
-  echo "$KERNEL_SRC/linux-$target doesn't exist"
+  echo "${KERNEL_SRC}/linux-${target} doesn't exist"
   exit 2
 fi
 
 
-if [ ! -d $KERNEL_SRC/linux ]
+if [ ! -d "${KERNEL_SRC}/linux" ]
 then
-  echo "$KERNEL_SRC/linux doesn't exist"
+  echo "${KERNEL_SRC}/linux doesn't exist"
   exit 3
 fi
 
-if [ ! -f $KERNEL_SRC/linux/.config ]
+if [ ! -f "${KERNEL_SRC}/linux/.config" ]
 then
-  echo "$KERNEL_SRC/linux.config doesn't exist"
+  echo "${KERNEL_SRC}/linux.config doesn't exist"
   exit 4
 fi
 
-cp $KERNEL_SRC/linux/.config $KERNEL_SRC/linux-$target
+cp ${KERNEL_SRC}/linux/.config ${KERNEL_SRC}/linux-${target}
 if [ $? -ne 0 ]
 then
   echo "Error : cannot copy config file"
-  exit 5
+#  exit 5
 else
   echo "Copy ok"
 fi
 
-rm $KERNEL_SRC/linux
+rm ${KERNEL_SRC}/linux
 if [ $? -ne 0 ]
 then
-  echo “Error : cannot remove old symbolic link”
+  echo "Error : cannot remove old symbolic link"
   exit 4
 else
   echo "symbolic link ok"
 fi
 
-ln -s $KERNEL_SRC/linux-$target $KERNEL_SRC/linux
+ln -s ${KERNEL_SRC}/linux-${target} ${KERNEL_SRC}/linux
 if [ $? -ne 0 ]
 then
   echo "Error : cannot create symbolic link"
@@ -80,20 +80,25 @@ else
   echo "symbolic link ok"
 fi
 
-cd $KERNEL_SRC/linux
+cd ${KERNEL_SRC}/linux
 pwd
 
 ################################################################################
 # Choosing kernel options
 ################################################################################
 make oldconfig
+
+################################################################################
+# Choosing kernel options
+################################################################################
+make menuconfig
  
 ################################################################################
 # Compile and install kernel
 ################################################################################
 make && make modules_install
 # 
-cp arch/x86_64/boot/bzImage /boot/kernel-$target
+cp arch/x86_64/boot/bzImage /boot/kernel-${target}
 if [ $? -ne 0 ]
 then
   echo "Error : cannot copy kernel image to /boot"
@@ -118,7 +123,7 @@ fi
 # Grub
 ################################################################################
 # Backup
-cp -p $GRUB_CFG_FILE $GRUB_CFG_FILE.$DATE
+cp -p ${GRUB_CFG_FILE} ${GRUB_CFG_FILE}.${DATE}
 if [ $? -ne 0 ]
 then
   echo "Error : cannot backup grub config file"
@@ -128,7 +133,7 @@ else
 fi
 
 # Update grub config
-grub-mkconfig -o $GRUB_CFG_FILE
+grub-mkconfig -o ${GRUB_CFG_FILE}
 if [ $? -ne 0 ]
 then
   echo "Error : cannot update grub config"

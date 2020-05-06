@@ -1,13 +1,12 @@
 #!/bin/ksh
-# Author : Thomas Pegeot
-# Description : scans a batch of pages with ADF and converts it to multiple pdf files
 
 TMP_DIR=/tmp/scan
 PDF_DIR=/media/documents/commun/scan
 
 [ -d $TMP_DIR ] || mkdir $TMP_DIR
 cd $TMP_DIR
-scanimage -y 297 -x 210 -b --batch-scan=yes --source ADF --format tiff --mode color --resolution 300dpi
+scanimage -y 297 -x 210 --batch-scan=no --source Flatbed --format tiff --mode color --resolution 300dpi > scan.tif
+#scanimage -y 297 -x 210 --batch-scan=no --source Flatbed --format tiff --mode gray --resolution 300dpi > scan.tif
 for file in $(find $TMP_DIR -name '*.tif')
 do
   input=$(basename $file .tif)
