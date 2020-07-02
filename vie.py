@@ -101,7 +101,7 @@ def main():
             # Ebuild file name
             ebuild_file_name = ebuild.split('/')[1].split(':')[0] + "*.ebuild"
     else:
-        print("Error : argument format is incorrect")
+        logs.error("Error : argument format is incorrect")
         sys.exit(-2)
 
     # Generate complete path
